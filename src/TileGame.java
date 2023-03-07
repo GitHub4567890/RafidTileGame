@@ -16,13 +16,44 @@ public class TileGame {
 
     private int getIndexForFit(NumberTile tile)
     {
+       if (board.size() == 0) {
+           return 0;
+       }
+       if (tile.getRight() == board.get(0).getLeft()) {
+           return 0;
+       } else if (tile.getLeft() == board.get(board.size() - 1).getRight()) {
+           return board.size();
+       }
+       int tL = tile.getRight();
+       int tR = tile.getRight();
+       int iR = 0;
+       int iL1 = 0;
+       for (int i = 0; i <= board.size() - 2; i++) {
+           iR = board.get(i).getRight();
+           iL1 = board.get(i + 1).getLeft();
+           if (iR == tL && iL1 == tR) {
+               return (i + 1);
+           }
+       }
        return -1;
     }
 
     public boolean insertTile(NumberTile tile)
     {
+        for (int i = 1; i <= 4; i++)
+        {
+            int index = getIndexForFit(tile);
+            if (index != -1)
+            {
+                board.add(index, tile);
+                return true;
+            }
+            tile.rotate();
+        }
+
         return false;
     }
+
     public String toString()
     {
         String retStr = "";
